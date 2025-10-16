@@ -12,8 +12,8 @@ no_std
 - UEFI提供関数を呼び出すOutput
 # 作成するファイル（せっかくだしクリーンアーキテクチャっぽく）
 - main.rs
+- lib.rs
 - lib/
-  - lib.rs
   - usecase/
     - utils
       - find_curly_braces_pairs.rs
@@ -26,8 +26,8 @@ no_std
 
 # 作成する関数
 - src/main@main()
-- src/lib/lib.rs@main()
-- src/lib/lib.rs@chacha_println!($(args::tt)*)
+- src/lib.rs@main()
+- src/lib.rs@chacha_println!($(args::tt)*)
 - src/lib/usecase/utils/format_chacha_println.rs@format_chacha_println!($($args:tt)*)
 - src/lib/infra/UEFI_output.rs@output(chars: &[char]) -> Result<(), ()>
 - src/lib/infra/output_UEFI.rs@encode_utf16(chars: &[char], target: &mut [u16] ) ->Result<usize, ()>
