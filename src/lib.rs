@@ -1,38 +1,53 @@
+#![no_std]
+
+extern crate alloc;
+
+use uefi::allocator::Allocator;
+
+#[global_allocator]
+static ALLOCATOR: Allocator = Allocator;
+
 pub mod libs;
 
-#[allow(dead_code)]
 pub const BUFF: usize = 256;
-#[allow(dead_code)]
 pub const ROW: usize = 256;
+pub const UTF16_BUFF: usize = BUFF * 2;
 
 #[macro_export]
 macro_rules! chacha_println {
     () => {
       {
-        $crate::print_test(['\0'; $crate::BUFF]);
+        // Empty println - do nothing
       }
     };
-    ($($args:expr)*) => {
-      {
+    ($($args:expr),*) => {
+      (|| {
+        use $crate::libs::usecase::Domain;
+
         let strings: &[&str];
-        let buff: u32;
-        let formated_strings_result: [[char; BUFF]; ROW];
-        let formated_string: [char; BUFF];
-        let formated_utf_16: [u16; UTF16_BUFF];
+        let formated_strings: [[char; $crate::BUFF]; $crate::ROW];
+        let formated_string: [char; $crate::BUFF];
+        let formated_utf_16: [u16; $crate::UTF16_BUFF];
 
         strings = &[$($args),*];
-        formated_strings = format_string_to_char_arraies(strings)?;
-        formated_string = format(formated_strings)?;
-        formated_utf_16 = format_to_utf_16(formated_string)?;
-        status = domain::Prinltn::println(formated_utf_16);
-        if status != 0 {
-
+        match $crate::libs::usecase::utils::format_string_to_char_arraies::format_string_to_char_arraies(strings) {
+            Ok(fs) => formated_strings = fs,
+            Err(_) => return,
         }
-      }
+        match $crate::libs::usecase::utils::format::format(formated_strings) {
+            Ok(fs) => formated_string = fs,
+            Err(_) => return,
+        }
+        match $crate::libs::usecase::utils::format_to_utf_16::format_to_utf_16(formated_string) {
+            Ok(fu) => formated_utf_16 = fu,
+            Err(_) => return,
+        }
+        let _ = $crate::libs::domain::service::Println::println(formated_utf_16);
+      })()
     };
 }
 
-#[allow(dead_code)]
-pub fn print_test(chars: [char; BUFF]) {
-    println!("{:?}", chars[0]);
-}
+// print_test is not available in no_std environment
+// pub fn print_test(chars: [char; BUFF]) {
+//     println!("{:?}", chars[0]);
+// }

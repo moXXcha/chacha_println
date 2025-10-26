@@ -1,8 +1,7 @@
 const BUFF: usize = 256;
 const ROW: usize = 256;
 
-#[allow(dead_code)]
-fn format_string_to_char_arraies(strings: &[&str]) -> Result<[[char; BUFF]; ROW], ()> {
+pub fn format_string_to_char_arraies(strings: &[&str]) -> Result<[[char; BUFF]; ROW], ()> {
     let mut ans_strings: [[char; BUFF]; ROW];
     let mut str_count: usize;
 

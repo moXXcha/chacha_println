@@ -1,4 +1,4 @@
 pub mod output;
-mod utils;
+pub mod utils;
 
 pub use output::Domain;

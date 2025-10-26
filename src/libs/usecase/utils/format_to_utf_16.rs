@@ -1,7 +1,6 @@
 const BUFF: usize = 256;
 const UTF16_BUFF: usize = BUFF * 2;
 
-#[allow(dead_code)]
 pub fn format_to_utf_16(string: [char; BUFF]) -> Result<[u16; UTF16_BUFF], ()> {
     let mut utf_16_char: [u16; UTF16_BUFF];
     let mut utf_16_len: usize;

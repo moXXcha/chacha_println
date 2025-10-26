@@ -7,13 +7,13 @@ pub struct Println;
 
 impl Domain for Println {
     fn println(string: [u16; BUFF]) -> Result<(), u32> {
-        let result: Result<(), [char; BUFF]>;
+        let result: Result<(), u32>;
 
         result = output::UEFI::output(string);
         match result {
             Ok(()) => {}
-            Err(error_string) => {
-                return Err(error_string);
+            Err(error_code) => {
+                return Err(error_code);
             }
         }
         Ok(())
